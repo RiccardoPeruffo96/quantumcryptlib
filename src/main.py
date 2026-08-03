@@ -6,6 +6,7 @@ import scipy as sp
 
 import sdp.dual
 import sdp.primal
+import sdp.matrix
 
 def main():
     parser = argparse.ArgumentParser(description="Esegue il circuito CNOT con ancilla usando un qubit di controllo generico.")
@@ -15,13 +16,13 @@ def main():
     d = parser.parse_args().d
 
     # Base matrix (d x d)
-    Xd = np.zeros((d, d)) # TODO: generate dinamically
+    Xa_d = sdp.matrix.genShiftMatrix(d)
 
     # Phase matrix (d x d)
-    Zd = np.eye(d) # TODO: generate dinamically
+    Zb_d = sdp.matrix.genPhaseMatrix(d)
 
-    print("Xd (zeros):\n", Xd)
-    print("\nZd (identity):\n", Zd)
+    print("Xa_d (zeros):\n", Xa_d)
+    print("\nZb_d (identity):\n", Zb_d)
 
 if __name__ == "__main__":
     main()
