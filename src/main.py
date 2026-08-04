@@ -3,6 +3,8 @@
 import argparse
 import numpy as np
 import scipy as sp
+import json
+import os
 
 import sdp.dual
 import sdp.primal
@@ -17,6 +19,12 @@ def main():
 
     # d equals qudit dimensionality
     d = parser.parse_args().d
+    
+    if os.path.exists("config.json"):
+        with open("config.json", "r") as f:
+            config = json.load(f)
+            if config.get("FORCE_OVERWRITE_d_PARAM", False):
+                d = config.get("d", d)
 
     # Base matrix (d x d)
     Xa_d = sdp.matrix.genShiftMatrix(d)
@@ -24,14 +32,14 @@ def main():
     # Phase matrix (d x d)
     Zb_d = sdp.matrix.genPhaseMatrix(d)
 
-    # Generate Weyl Heisenberg local Operators
+    # Generate Weyl Heisenberg local Operators (d^2 * d^2)
     U_local = sdp.matrix.genWeylHeisenbergOperators(d, Xa_d, Zb_d)
 
-    # Generate bipartite operators
+    # Generate bipartite operators (d^4 * d^4)
     U_bipartite = sdp.matrix.genBipartiteWeylHeisenbergOperators(d, U_local, U_local)
 
-    print("Xa_d (zeros):\n", Xa_d)
-    print("\nZb_d (identity):\n", Zb_d)
+    print("Xa_d:\n", Xa_d)
+    print("\nZb_d:\n", Zb_d)
     print("\nU_local (Weyl Heisenberg Operators):\n", U_local)
     print("\nU_bipartite (Bipartite Weyl Heisenberg Operators):\n", U_bipartite)
 

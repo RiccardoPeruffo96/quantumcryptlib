@@ -1,0 +1,6 @@
+{
+    "d": 4,
+    "FORCE_OVERWRITE_d_PARAM": false,
+    "QUDIT_STATE_ALICE": "|0>",
+    "QUDIT_STATE_BOB": "|0>"
+}

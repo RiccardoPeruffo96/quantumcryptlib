@@ -1,0 +1,1 @@
+python3.exe .\src\main.py --d 4
