@@ -1,6 +1,14 @@
 {
     "d": 4,
     "FORCE_OVERWRITE_d_PARAM": false,
-    "QUDIT_STATE_ALICE": "|0>",
-    "QUDIT_STATE_BOB": "|0>"
+    "USER_ALPHA": {
+        "QUDIT_STATE": "|0>",
+        "VALUE_TO_ENCODE_A": 1,
+        "VALUE_TO_ENCODE_B": 3
+    },
+    "USER_BETA": {
+        "QUDIT_STATE": "|0>",
+        "VALUE_TO_ENCODE_A": 3,
+        "VALUE_TO_ENCODE_B": 2
+    }
 }
