@@ -74,8 +74,8 @@ def genWeylHeisenbergOperators(d: int,
     return U
 
 def genBipartiteWeylHeisenbergOperators(d: int,
-                               U1_d: dict[tuple[int, int], npt.NDArray[np.complex128]] | None = None,
-                               U2_d: dict[tuple[int, int], npt.NDArray[np.complex128]] | None = None
+                               U1_d: dict[tuple[int, int], npt.NDArray[np.complex128]],
+                               U2_d: dict[tuple[int, int], npt.NDArray[np.complex128]]
                                ) -> dict[tuple[int, int, int, int], npt.NDArray[np.complex128]]:
     """
     Combine both Weyl Heisenberg operators using Kronecker product to create the d^4 bipartite operators
@@ -85,16 +85,3 @@ def genBipartiteWeylHeisenbergOperators(d: int,
         for (a2, b2), U2 in U2_d.items():
             U_bipartite[(a1, b1, a2, b2)] = np.kron(U1, U2)
     return U_bipartite
-
-def genBipartiteWeylHeisenbergOperators(d: int,
-                               Xa1_d: npt.NDArray[np.complex128] | None = None,
-                               Zb1_d: npt.NDArray[np.complex128] | None = None,
-                               Xa2_d: npt.NDArray[np.complex128] | None = None,
-                               Zb2_d: npt.NDArray[np.complex128] | None = None
-                               ) -> dict[tuple[int, int, int, int], npt.NDArray[np.complex128]]:
-    """
-    Override the previous function to generate bipartite Weyl Heisenberg operators directly from the shift and phase matrices.
-    """
-    U1_d = genWeylHeisenbergOperators(d, Xa1_d, Zb1_d)
-    U2_d = genWeylHeisenbergOperators(d, Xa2_d, Zb2_d)
-    return genBipartiteWeylHeisenbergOperators(d, U1_d, U2_d)

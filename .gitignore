@@ -1,2 +1,3 @@
 .env
+result.txt
 src/sdp/__pycache__/*
