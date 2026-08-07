@@ -16,7 +16,8 @@ def main():
     parser.add_argument("--qber", type=float, default=0.05, help="QBER (Quantum Bit Error Rate) (0 <= qber <= 1)")
     parser.add_argument("--tc", type=int, default=100000, help="Total coincidences (number of photons exchanged in a small slice of time) (tc >= 1)")
     parser.add_argument("--vX", type=float, default=0.88, help="Total visibility (how much noise or interception are in the channel, best near 1.0) (0 <= visibilityX <= 1)")
-    
+
+    # TODO: test parsing parameters
     if parser.parse_args().d < 2:
         parser.error("Qudit dimension d must be at least 2.")
     if parser.parse_args().qberZ < 0.0 or parser.parse_args().qberZ > 1.0:
@@ -31,13 +32,12 @@ def main():
     c_QBER_Z = 1.0 - QBER_Z
     total_coincidences = parser.parse_args().tc
     visibility_X = parser.parse_args().vX
-    
+    c_visibility_X = visibility_X
+
+    # TODO: Test reading config.json
     if os.path.exists("config.json"):
         with open("config.json", "r") as file:
             config = json.load(file)
-            EXPERIMENTAL_STATISTICS = config.get("EXPERIMENTAL_STATISTICS", {})
-            OVERWRITE_PARAMS = config.get("OVERWRITE_PARAMS", {})
-            SYSTEM_PARAMS = config.get("SYSTEM_PARAMS", {})
             if config.get("OVERWRITE_PARAMS", True).get("d", True):
                 d = config.get("SYSTEM_PARAMS", d).get("d", d)
             if config.get("OVERWRITE_PARAMS", True).get("total_coincidences", True):

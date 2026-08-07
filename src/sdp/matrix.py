@@ -121,6 +121,7 @@ def genBipartiteWeylHeisenbergOperators(d: int,
             U_bipartite[(a1, b1, a2, b2)] = np.kron(U1, U2)
     return U_bipartite
 
+# TODO: This is a draft version not tested
 def gen_phase_error_cost_matrix(d: int) -> npt.NDArray[np.complex128]:
     """
     Generates the cost matrix C representing the Phase Error operator.
