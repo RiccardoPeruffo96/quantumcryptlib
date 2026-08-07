@@ -151,3 +151,55 @@ def gen_phase_error_cost_matrix(d: int) -> npt.NDArray[np.complex128]:
     C = np.eye(dim, dtype=np.complex128) - P_ideal
 
     return C
+
+def gen_W_QBER_Z(d: int) -> npt.NDArray[np.complex128]:
+    """
+    Generate W_QBER_Z operator.
+    Total dimension of the matrix: (d^2) x (d^2)
+
+    Args:
+        d: Dimension of single qudit (dim of bipartite space is d^2 x d^2).
+
+    Returns:
+        npt.NDArray[np.complex128]: Hermitian matrix W_QBER_Z of size (d^2, d^2).
+    """
+    I_d = np.eye(d, dtype=complex)
+    
+    # This operator projects onto the subspace spanned by the states |i,i> for i in {0, 1, ..., d-1}.
+    proj_correct = np.zeros((d**2, d**2), dtype=complex)
+    for i in range(d):
+        # State |i>
+        ket_i = np.zeros((d, 1), dtype=complex)
+        ket_i[i] = 1.0
+        proj_i = ket_i @ ket_i.T.conj() # |i><i|
+        # Tensor product of proj_i with itself to get the bipartite projector
+        proj_correct += np.kron(proj_i, proj_i)
+    
+    # W_QBER_Z = I_total - proj_correct (for each i != j)
+    W_qber_z = np.eye(d**2, dtype=complex) - proj_correct
+    return W_qber_z
+
+def gen_W_visibility_X(d: int,
+                      Xa_d: npt.NDArray[np.complex128] | None = None) -> npt.NDArray[np.complex128]:
+    """
+    Generate the Visibility operator along the X basis for two qudits.
+    
+    Args:
+        d: Dimension of single qudit (dim of bipartite space is d^2 x d^2).
+        Xa_d: Optional; the shift matrix. If None, it will be generated.
+        
+    Returns:
+        npt.NDArray[np.complex128]: Hermitian matrix W_VisibilityX of size (d^2, d^2).    
+    """
+
+    X_d = Xa_d
+    if(Xa_d is None):
+        X_d = genShiftMatrix(d)
+
+    W_vis_x = np.zeros((d**2, d**2), dtype=complex)
+    
+    for k in range(1, d):
+        X_k = np.linalg.matrix_power(X_d, k)
+        W_vis_x += np.kron(X_k.conj().T, X_k)
+        
+    return W_vis_x / d

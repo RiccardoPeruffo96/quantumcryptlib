@@ -68,11 +68,26 @@ def main():
     # Generate the phase error cost matrix
     C = sdp.matrix.gen_phase_error_cost_matrix(d)
 
+    # Generate observation constrains
+    observations = []
+
+    # Add first observation
+    W_QBER_Z = sdp.matrix.gen_W_QBER_Z(d)
+    observations.append(W_QBER_Z, c_QBER_Z)
+
+    # Add second observation
+    W_visibility_X = sdp.matrix.gen_W_visibility_X(d, Xa_d)
+    observations.append(W_visibility_X, c_visibility_X)
+
+    # Calcolate primal SDP
+    rho = sdp.primal.solve_primal_sdp(d, U_bipartite, observations, C)
+
     print("Xa_d:\n", Xa_d)
     print("\nZb_d:\n", Zb_d)
     print("\nU_local (Weyl Heisenberg Operators):\n", U_local)
     print("\nU_bipartite (Bipartite Weyl Heisenberg Operators):\n", U_bipartite)
     print("\nC (Phase Error Cost Matrix):\n", C)
+    print("\nrho (primal sdp):\n", rho)
 
 if __name__ == "__main__":
     main()

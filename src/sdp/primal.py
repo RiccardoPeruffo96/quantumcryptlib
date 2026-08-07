@@ -23,6 +23,7 @@ def solve_primal_sdp(
         observations: A dictionary mapping 4-tuple keys (a1, b1, a2, b2) to 
             their observed real expectation values (gamma) measured in the 
             quantum channel. Represents the constraint Tr(rho * W) = gamma.
+        C: The phase error cost matrix
 
     Returns:
         npt.NDArray[np.complex128] | None: The optimal density matrix (rho) 
@@ -37,10 +38,8 @@ def solve_primal_sdp(
 
     # 2. Fundamental Quantum State Constraints
     constraints = [
-        rho >> 0,                            # Positive Semidefinite constraint (rho >= 0)
-        cp.trace(W_0 @ rho) == c_0,          # Trace = 1
-        cp.trace(W_1 @ rho) == c_1,          # QBER
-        cp.trace(W_2 @ rho) == c_2           # Visibility
+        rho >> 0,                    # Positive Semidefinite constraint (rho >= 0)
+        cp.trace(rho) == 1,          # Trace = 1
     ]
 
     # 3. Channel Observation Constraints
