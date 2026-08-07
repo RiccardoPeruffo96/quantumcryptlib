@@ -16,6 +16,12 @@ Key milestones include:
 ## Future Developments
 Pending satisfactory analytical results from the initial implementation, the computational framework will be evaluated for hardware acceleration. If the architectural and mathematical conditions permit, the algorithmic structures will be refactored to execute natively on a GPU environment, aiming to optimize the efficiency of high-dimensional matrix operations.
 
+## How to setup config.json
+TODO
+
+## Run the script
+* Windows: execute .\start.ps1
+
 ## Author
 **Riccardo Peruffo**
 riccardo.peruffo@studenti.univr.it

@@ -23,7 +23,8 @@ def main():
     if os.path.exists("config.json"):
         with open("config.json", "r") as f:
             config = json.load(f)
-            if config.get("FORCE_OVERWRITE_d_PARAM", False):
+            OVERWRITE_PARAMS = config.get("OVERWRITE_PARAMS", {})
+            if config.get(OVERWRITE_PARAMS.get("d", True), True):
                 d = config.get("d", d)
 
     # Base matrix (d x d)
@@ -38,10 +39,14 @@ def main():
     # Generate bipartite operators (d^4 * d^4)
     U_bipartite = sdp.matrix.genBipartiteWeylHeisenbergOperators(d, U_local, U_local)
 
+    # Generate the phase error cost matrix
+    C = sdp.matrix.gen_phase_error_cost_matrix(d)
+
     print("Xa_d:\n", Xa_d)
     print("\nZb_d:\n", Zb_d)
     print("\nU_local (Weyl Heisenberg Operators):\n", U_local)
     print("\nU_bipartite (Bipartite Weyl Heisenberg Operators):\n", U_bipartite)
+    print("\nC (Phase Error Cost Matrix):\n", C)
 
 if __name__ == "__main__":
     main()

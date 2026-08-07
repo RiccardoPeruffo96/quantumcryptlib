@@ -13,6 +13,12 @@ def omega(d: int) -> np.complex128:
     Omega is a complex number that represents the d-th root of unity.
     It is defined as exp(2πi/d), where i is the imaginary unit.
     This function returns the value of omega for a given dimension d.
+
+    Args:
+        d: The dimension of the qudit (d >= 2).
+
+    Returns:
+        np.complex128: The d-th root of unity, omega = exp(2πi/d).
     """
     return np.exp(2j * np.pi / d)
 
@@ -26,6 +32,12 @@ def genShiftMatrix(d: int) -> npt.NDArray[np.complex128]:
          [0, 0, 1, 0]]
     Is a unitary matrix that shifts the elements of a vector to the right by one position,
     with the last element wrapping around to the first position.
+
+    Args:
+        d: The dimension of the qudit (d >= 2).
+
+    Returns:
+        npt.NDArray[np.complex128]: The d x d shift matrix.
     """
     X = np.eye(d, k=-1)
     X[0, d-1] = 1.0
@@ -42,6 +54,13 @@ def genPhaseMatrix(d: int,
          [0, 0, -1, 0],
          [0, 0, 0, -1j]]
     Each value of the diagonal is an omega fraction of movement from -1 to 1 in the complex plane.
+
+    Args:
+        d: The dimension of the qudit (d >= 2).
+        omega_value: Optional; the value of omega to use. If None, it will be computed.
+
+    Returns:
+        npt.NDArray[np.complex128]: The d x d phase matrix.
     """
     if omega_value is None:
         omega_value = omega(d)
@@ -58,6 +77,14 @@ def genWeylHeisenbergOperators(d: int,
     Uab_d = Xa_d*Zb_d for each a, b in {0, 1, ..., d-1}
     Note that the Weyl-Heisenberg operators are a set of unitary matrices that form a basis for the space of d x d complex matrices.
     Fundamental property: Zb_d*Xa_d = omega^(-ab)*Xa_d*Zb_d
+
+    Args:
+        d: The dimension of the qudit (d >= 2).
+        Xa_d: Optional; the shift matrix. If None, it will be generated.
+        Zb_d: Optional; the phase matrix. If None, it will be generated.
+
+    Returns:
+        dict[tuple[int, int], npt.NDArray[np.complex128]]: A dictionary mapping (a, b) pairs to their corresponding Weyl-Heisenberg operator matrices Uab_d.
     """
     if Xa_d is None:
         Xa_d = genShiftMatrix(d)
@@ -79,9 +106,47 @@ def genBipartiteWeylHeisenbergOperators(d: int,
                                ) -> dict[tuple[int, int, int, int], npt.NDArray[np.complex128]]:
     """
     Combine both Weyl Heisenberg operators using Kronecker product to create the d^4 bipartite operators
+
+    Args:
+        d: The dimension of the qudit (d >= 2).
+        U1_d: A dictionary mapping (a1, b1) pairs to their corresponding Weyl-Heisenberg operator matrices for the first qudit.
+        U2_d: A dictionary mapping (a2, b2) pairs to their corresponding Weyl-Heisenberg operator matrices for the second qudit.
+
+    Returns:
+        dict[tuple[int, int, int, int], npt.NDArray[np.complex128]]: A dictionary mapping (a1, b1, a2, b2) tuples to their corresponding bipartite Weyl-Heisenberg operator matrices.
     """
     U_bipartite = {}
     for (a1, b1), U1 in U1_d.items():
         for (a2, b2), U2 in U2_d.items():
             U_bipartite[(a1, b1, a2, b2)] = np.kron(U1, U2)
     return U_bipartite
+
+def gen_phase_error_cost_matrix(d: int) -> npt.NDArray[np.complex128]:
+    """
+    Generates the cost matrix C representing the Phase Error operator.
+    
+    In QKD SDP formulations, minimizing Tr(C * rho) finds the maximum possible 
+    fidelity or minimum phase error under Eve's attack.
+    
+    Args:
+        d: Dimension of single qudit (dim of bipartite space is d^2 x d^2).
+        
+    Returns:
+        npt.NDArray[np.complex128]: Hermitian matrix C of size (d^2, d^2).
+    """
+    dim = d * d
+
+    # 1. Define the ideal maximally entangled state |Phi+> = (1/sqrt(d)) * sum(|i,i>)
+    phi_plus = np.zeros((dim, 1), dtype=np.complex128)
+    for i in range(d):
+        # Index in bipartite basis corresponding to |i, i> -> i*d + i
+        phi_plus[i * d + i] = 1.0 / np.sqrt(d)
+
+    # 2. Build the projector onto the ideal state: P_ideal = |Phi+><Phi+|
+    P_ideal = phi_plus @ phi_plus.conj().T
+
+    # 3. Cost matrix C = I - P_ideal (Phase error operator)
+    # Minimizing Tr(C @ rho) is equivalent to maximizing Fidelity Tr(P_ideal @ rho)
+    C = np.eye(dim, dtype=np.complex128) - P_ideal
+
+    return C

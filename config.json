@@ -1,14 +1,30 @@
 {
-    "d": 4,
-    "FORCE_OVERWRITE_d_PARAM": false,
-    "USER_ALPHA": {
-        "QUDIT_STATE": "|0>",
-        "VALUE_TO_ENCODE_A": 1,
-        "VALUE_TO_ENCODE_B": 3
+    "EXPERIMENTAL_STATISTICS": [
+        {
+            "c": "1-value",
+            "type": "qber_z",
+            "value": 0.05
+        },
+        {
+            "c": "value",
+            "type": "visibility_X",
+            "value": 0.88
+        }
+    ],
+    "OVERWRITE_PARAMS": {
+        "d": true,
+        "qber_z": true,
+        "total_coincidences": true,
+        "visibility_X": true
     },
-    "USER_BETA": {
-        "QUDIT_STATE": "|0>",
-        "VALUE_TO_ENCODE_A": 3,
-        "VALUE_TO_ENCODE_B": 2
+    "SYSTEM_PARAMS": {
+        "bases_used": ["Z", "X"],
+        "d": 4,
+        "protocol": "EB-HDQKD",
+        "total_coincidences": 100000
+    },
+    "SDP_SETTINGS": {
+        "precision": 1e-8,
+        "solver": "cvxpy"
     }
 }

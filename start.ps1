@@ -1,1 +1,1 @@
-python3.exe .\src\main.py --d 4 > result.txt
+python .\src\main.py --d 4 > result.txt
