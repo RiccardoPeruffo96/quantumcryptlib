@@ -19,12 +19,14 @@
     },
     "SYSTEM_PARAMS": {
         "bases_used": ["Z", "X"],
-        "d": 3,
+        "d": 4,
         "protocol": "EB-HDQKD",
         "total_coincidences": 100000
     },
     "SDP_SETTINGS": {
+        "decimals": 3,
         "precision": 1e-8,
+        "output_filename": "result.txt",
         "solver": "cvxpy"
     }
 }
