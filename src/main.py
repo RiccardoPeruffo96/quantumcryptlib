@@ -2,11 +2,11 @@
 
 import argparse
 import cvxpy as cp
+import json
 import numpy as np
 import numpy.typing as npt
-import scipy as sp
-import json
 import os
+import scipy as sp
 
 import sdp.dual
 import sdp.primal
@@ -19,7 +19,6 @@ def main():
     parser.add_argument("--tc", type=int, default=100000, help="Total coincidences (number of photons exchanged in a small slice of time) (tc >= 1)")
     parser.add_argument("--vX", type=float, default=0.88, help="Total visibility (how much noise or interception are in the channel, best near 1.0) (0 <= visibilityX <= 1)")
 
-    # TODO: test parsing parameters
     if parser.parse_args().d < 2:
         parser.error("Qudit dimension d must be at least 2.")
     if parser.parse_args().qberZ < 0.0 or parser.parse_args().qberZ > 1.0:
@@ -36,7 +35,6 @@ def main():
     visibility_X = parser.parse_args().vX
     c_visibility_X = visibility_X
 
-    # TODO: Test reading config.json
     if os.path.exists("config.json"):
         with open("config.json", "r") as file:
             config = json.load(file)
@@ -55,7 +53,7 @@ def main():
                         if ES.type == "visibility_X":
                             visibility_X = ES.value
                             c_visibility_X = ES.value
-            
+
     # Base matrix (d x d)
     Xa_d = sdp.matrix.genShiftMatrix(d)
 

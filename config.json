@@ -12,14 +12,14 @@
         }
     ],
     "OVERWRITE_PARAMS": {
-        "d": true,
-        "qber_z": true,
+        "d": false,
+        "qber_z": false,
         "total_coincidences": true,
-        "visibility_X": true
+        "visibility_X": false
     },
     "SYSTEM_PARAMS": {
         "bases_used": ["Z", "X"],
-        "d": 4,
+        "d": 3,
         "protocol": "EB-HDQKD",
         "total_coincidences": 100000
     },
