@@ -72,19 +72,19 @@ def main():
     C = sdp.matrix.gen_phase_error_cost_matrix(d)
 
     ## TODO: FIX ERROR TYPE IN 'observations' var and references
-    # Generate observation constrains
-    observations: dict[float, npt.NDArray[np.complex128]] = {}
+    # Generate observation constraints: list of (W_k matrix, c_k value)
+    observations: list[tuple[npt.NDArray[np.complex128], float]] = []
 
     # Add first observation
     W_QBER_Z = sdp.matrix.gen_W_QBER_Z(d)
-    observations[(c_QBER_Z, W_QBER_Z)]
-
+    observations.append((W_QBER_Z, c_QBER_Z))
+    
     # Add second observation
     W_visibility_X = sdp.matrix.gen_W_visibility_X(d, Xa_d)
-    observations[(c_visibility_X, W_visibility_X)]
+    observations.append((W_visibility_X, W_visibility_X))
 
     # Calcolate primal SDP
-    rho = sdp.primal.solve_primal_sdp(d, U_bipartite, observations, C)
+    rho = sdp.primal.solve_primal_sdp(d, observations, C)
 
     print("Xa_d:\n", Xa_d)
     print("\nZb_d:\n", Zb_d)

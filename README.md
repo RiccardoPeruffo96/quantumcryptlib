@@ -20,7 +20,10 @@ Pending satisfactory analytical results from the initial implementation, the com
 TODO
 
 ## Run the script
-* Windows: execute .\start.ps1
+* Windows (x64): .\start.ps1
+
+## Python version used during test and development
+* Windows (x64): Python 3.12.10
 
 ## Author
 **Riccardo Peruffo**
