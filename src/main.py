@@ -71,7 +71,6 @@ def main():
     # Generate the phase error cost matrix
     C = sdp.matrix.gen_phase_error_cost_matrix(d)
 
-    ## TODO: FIX ERROR TYPE IN 'observations' var and references
     # Generate observation constraints: list of (W_k matrix, c_k value)
     observations: list[tuple[npt.NDArray[np.complex128], float]] = []
 
