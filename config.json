@@ -26,7 +26,7 @@
     "SDP_SETTINGS": {
         "decimals": 3,
         "precision": 1e-8,
-        "output_filename": "result.txt",
+        "output_filename": "out/report.txt",
         "solver": "cvxpy"
     }
 }

@@ -1,4 +1,5 @@
 .env
 .venv
 result.txt
+out/*
 src/sdp/__pycache__/*
