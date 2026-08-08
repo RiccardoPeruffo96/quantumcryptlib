@@ -6,7 +6,7 @@ import numpy.typing as npt
 def solve_primal_sdp(
     d: int,
     U_bipartite: dict[tuple[int, int, int, int], npt.NDArray[np.complex128]],
-    observations: dict[tuple[int, int, int, int], float],
+    observations: dict[float, npt.NDArray[np.complex128]],
     C: npt.NDArray[np.complex128]
 ) -> npt.NDArray[np.complex128] | None:
     """Solves the primal Semidefinite Program (SDP) to find the quantum state rho.
@@ -43,7 +43,7 @@ def solve_primal_sdp(
     ]
 
     # 3. Channel Observation Constraints
-    for key, gamma_val in observations.items():
+    for gamma_val, key in observations.items():
         W_v = U_bipartite[key]
         # Match expected value Tr(rho * W_v) with observed data gamma
         constraints.append(cp.real(cp.trace(rho @ W_v)) == gamma_val)

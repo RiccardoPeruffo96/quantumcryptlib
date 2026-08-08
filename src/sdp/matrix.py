@@ -115,7 +115,7 @@ def genBipartiteWeylHeisenbergOperators(d: int,
     Returns:
         dict[tuple[int, int, int, int], npt.NDArray[np.complex128]]: A dictionary mapping (a1, b1, a2, b2) tuples to their corresponding bipartite Weyl-Heisenberg operator matrices.
     """
-    U_bipartite = {}
+    U_bipartite: dict[tuple[int, int, int, int], npt.NDArray[np.complex128]] = {}
     for (a1, b1), U1 in U1_d.items():
         for (a2, b2), U2 in U2_d.items():
             U_bipartite[(a1, b1, a2, b2)] = np.kron(U1, U2)
