@@ -50,7 +50,7 @@ def solve_primal_sdp(
 
     # 3. Channel Observation Constraints
     for W_k, c_k in observations:
-        # Match expected value Tr(W_k * rho) with observed data c_k
+        # Match expected value Tr(W_k * rho) with observed data c_k under the margin of error e
         constraints.append(cp.abs(cp.real(cp.trace(W_k @ rho)) - c_k) <= e)
 
     # 4. Objective Function Setup
