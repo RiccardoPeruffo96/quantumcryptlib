@@ -44,6 +44,8 @@ def main():
     precision: float = 1e-8
     output_filename: str = "out/report.txt"
 
+    delta: float = 1e-10  # statistical confidence level for the Hoeffding's inequality bound
+
     if os.path.exists("config.json"):
         with open("config.json", "r") as file:
             config = json.load(file)
@@ -54,6 +56,7 @@ def main():
                 total_coincidences = config.get("SYSTEM_PARAMS", total_coincidences).get("total_coincidences", total_coincidences)
             # Import SDP_SETTINGS
             decimals = config.get("SDP_SETTINGS", decimals).get("decimals", decimals)
+            delta = config.get("SDP_SETTINGS", delta).get("delta", delta)
             output_filename = config.get("SDP_SETTINGS", output_filename).get("output_filename", output_filename)
             precision = config.get("SDP_SETTINGS", precision).get("precision", precision)
             # TODO: Add read parameters QBER_Z and visibility_X from JSON
@@ -95,7 +98,7 @@ def main():
     observations.append((W_visibility_X, c_visibility_X))
 
     # Calcolate primal SDP
-    rho = sdp.primal.solve_primal_sdp(d, observations, C)
+    rho = sdp.primal.solve_primal_sdp(d, observations, C, delta, total_coincidences)
 
     if output_filename.endswith('.txt'):
         sdp.utils.export_results_txt(
