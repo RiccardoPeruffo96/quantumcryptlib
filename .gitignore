@@ -1,5 +1,6 @@
 .env
 .venv
+.vscode
 result.txt
 out/*
 src/sdp/__pycache__/*
