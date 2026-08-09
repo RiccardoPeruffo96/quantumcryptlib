@@ -37,7 +37,10 @@ def solve_primal_sdp(
     dim = d * d
 
     # Statistical margin of error calculated from Hoeffding's inequality bound
-    e = np.sqrt(np.log(delta/2)/(2*N))  
+    # delta = 2*exp(-2 * N * e^2) => 
+    # e = sqrt(log(delta/2)/(-2*N))
+    # e = sqrt(log(2/delta)/(2*N))
+    e: float = np.sqrt(np.log(2/delta)/(2*N))
 
     # 1. Decision Variable: Density matrix (Hermitian matrix of size d^2 * d^2)
     rho = cp.Variable((dim, dim), complex=True, hermitian=True)
