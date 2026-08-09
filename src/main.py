@@ -129,5 +129,11 @@ def main():
             output_filename=output_filename
         )
 
+    #sdp.utils.save_quantum_state(Xa_d, "data\\matrix\\Xa_d.safetensors")
+    #sdp.utils.save_quantum_state(Zb_d, "data\\matrix\\Zb_d.safetensors")
+    #sdp.utils.save_quantum_state(U_local, "data\\matrix\\U_local.safetensors")
+    #sdp.utils.save_quantum_state(U_bipartite, "data\\matrix\\U_bipartite.safetensors")
+    #sdp.utils.save_quantum_state(C, "data\\matrix\\C.safetensors")
+
 if __name__ == "__main__":
     main()

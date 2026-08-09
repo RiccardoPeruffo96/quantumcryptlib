@@ -62,7 +62,7 @@ def solve_primal_sdp(
 
     # 5. Solve the optimization problem
     prob = cp.Problem(objective, constraints)
-    prob.solve(solver=cp.SCS, eps=1e-8, max_iters=10000)
+    prob.solve(solver=cp.SCS, eps=1e-10, max_iters=100000)
     print("Solver Status: ", prob.status)
 
     return rho.value

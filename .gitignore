@@ -1,6 +1,7 @@
 .env
 .venv
 .vscode
+data/matrix/*
 result.txt
 out/*
 src/sdp/__pycache__/*

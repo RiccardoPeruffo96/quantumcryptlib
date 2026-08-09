@@ -5,6 +5,8 @@ import json
 import numpy as np
 import numpy.typing as npt
 
+from safetensors.numpy import save_file, load_file
+
 def clean_matrix(arr: npt.NDArray[np.complex128], eps: float = 1e-10) -> npt.NDArray[np.complex128]:
     """
     Resets real and imaginary components below the eps tolerance.
@@ -46,7 +48,6 @@ def format_complex_matrix(arr: npt.NDArray[np.complex128], precision: int = 2, e
     # Set NumPy formatting to suppress unnecessary scientific notation
     with np.printoptions(precision=precision, suppress=True, linewidth=120):
         return str(cleaned)
-
 class NumpyComplexEncoder(json.JSONEncoder):
     """
     Custom JSON encoder to handle NumPy arrays, scalar types, and complex numbers.
@@ -201,3 +202,33 @@ def export_results_txt(
     print(final_report)
     with open(output_filename, "w", encoding="utf-8") as f:
         f.write(final_report)
+
+#TODO: fix
+def save_quantum_state(matrix: np.ndarray, filename: str):
+    """
+    Save the target matrix in a satensors format.
+    
+    Args:
+        matrix: matrix to store(np.ndarray complex).
+        filename: Il percorso del file di destinazione.
+    
+    Note:
+        Safetensors doesn't support np.complex128 type, so the matrix require
+        a view trasnformation.
+    """
+    data = {"matrix": matrix.view(np.float64)} 
+    save_file(data, filename)
+
+def load_quantum_state(filename: str, shape: tuple) -> np.ndarray:
+    """
+    Read target matrix from safetensors.
+
+    Args:
+        filename: Path to the source file.
+        shape: Target shape of the matrix to reconstruct.
+
+    Returns:
+        np.ndarray: The reconstructed complex matrix.
+    """
+    tensors = load_file(filename)
+    return tensors["rho"].view(np.complex128).reshape(shape)
