@@ -163,8 +163,6 @@ def gen_W_QBER_Z(d: int) -> npt.NDArray[np.complex128]:
     Returns:
         npt.NDArray[np.complex128]: Hermitian matrix W_QBER_Z of size (d^2, d^2).
     """
-    I_d = np.eye(d, dtype=complex)
-    
     # This operator projects onto the subspace spanned by the states |i,i> for i in {0, 1, ..., d-1}.
     proj_correct = np.zeros((d**2, d**2), dtype=complex)
     for i in range(d):

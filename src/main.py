@@ -98,7 +98,11 @@ def main():
     observations.append((W_visibility_X, c_visibility_X))
 
     # Calcolate primal SDP
-    rho = sdp.primal.solve_primal_sdp(d, observations, C, delta, total_coincidences)
+    rho_primal = sdp.primal.solve_primal_sdp(d, observations, C, delta, total_coincidences)
+
+    # TODO: test it
+    # Calcolate dual SDP
+    y_dual = sdp.dual.solve_dual_sdp(observations, C, delta, total_coincidences)
 
     if output_filename.endswith('.txt'):
         sdp.utils.export_results_txt(
@@ -109,7 +113,7 @@ def main():
             Xa_d=Xa_d,
             Zb_d=Zb_d,
             C=C,
-            rho=rho,
+            rho=rho_primal,
             decimals=decimals,
             precision=precision,
             output_filename=output_filename
@@ -123,7 +127,7 @@ def main():
             Xa_d=Xa_d,
             Zb_d=Zb_d,
             C=C,
-            rho=rho,
+            rho=rho_primal,
             decimals=decimals,
             precision=precision,
             output_filename=output_filename
