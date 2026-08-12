@@ -6,7 +6,6 @@ import json
 import numpy as np
 import numpy.typing as npt
 import os
-import scipy as sp
 
 import sdp.dual
 import sdp.primal
