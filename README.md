@@ -16,11 +16,18 @@ Key milestones include:
 ## Future Developments
 Pending satisfactory analytical results from the initial implementation, the computational framework will be evaluated for hardware acceleration. If the architectural and mathematical conditions permit, the algorithmic structures will be refactored to execute natively on a GPU environment, aiming to optimize the efficiency of high-dimensional matrix operations.
 
+## How setup python
+```bash
+git clone https://github.com/RiccardoPeruffo96/quantumcryptlib
+cd quantumcryptlib
+pip install -r requirements.txt
+```
+
 ## How to setup config.json
 TODO
 
 ## Run the script
-* Windows (x64): .\start.ps1
+* Windows (x64): `.\start.ps1`
 
 ## Python version used during test and development
 * Windows (x64): Python 3.12.10
