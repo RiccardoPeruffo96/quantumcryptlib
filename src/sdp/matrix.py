@@ -198,6 +198,6 @@ def gen_W_visibility_X(d: int,
     
     for k in range(0, d):
         X_k = np.linalg.matrix_power(X_d, k)
-        W_vis_x += np.kron(X_k.conj().T, X_k)
-        
+        W_vis_x += np.kron(X_k, X_k)
+    
     return W_vis_x / d
