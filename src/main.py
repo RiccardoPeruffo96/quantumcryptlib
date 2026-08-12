@@ -104,6 +104,8 @@ def main():
     # Calcolate dual SDP
     y_dual = sdp.dual.solve_dual_sdp(observations, C, delta, total_coincidences)
 
+    #print(f"y_dual: {y_dual}")
+
     if output_filename.endswith('.txt'):
         sdp.utils.export_results_txt(
             d=d,
@@ -114,6 +116,7 @@ def main():
             Zb_d=Zb_d,
             C=C,
             rho=rho_primal,
+            y=y_dual,
             decimals=decimals,
             precision=precision,
             output_filename=output_filename
@@ -128,6 +131,7 @@ def main():
             Zb_d=Zb_d,
             C=C,
             rho=rho_primal,
+            y=y_dual,
             decimals=decimals,
             precision=precision,
             output_filename=output_filename

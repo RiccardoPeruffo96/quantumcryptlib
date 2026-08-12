@@ -76,6 +76,7 @@ def export_results_json(
     Zb_d: npt.NDArray[np.complex128],
     C: npt.NDArray[np.complex128],
     rho: npt.NDArray[np.complex128] | None,
+    y: float | None,
     precision: float = 1e-8,
     output_filename: str = "out/report.json"
 ) -> None:
@@ -124,6 +125,7 @@ def export_results_txt(
     Zb_d: npt.NDArray[np.complex128],
     C: npt.NDArray[np.complex128],
     rho: npt.NDArray[np.complex128] | None,
+    y: float | None,
     decimals: int = 2,
     precision: float = 1e-8,
     output_filename: str = "out/report.txt"
@@ -140,6 +142,7 @@ def export_results_txt(
         Zb_d: Phase operator matrix (d x d).
         C: Phase error cost matrix (d^2 x d^2).
         rho: Optimized density matrix resulting from the primal SDP.
+        y: 
         decimals: Number of decimal places to format floating point values.
         precision: Absolute threshold below which matrix entries are zeroed out.
         output_filename: Path to the target text file for report export.
@@ -178,7 +181,7 @@ def export_results_txt(
         c_diag = np.diag(clean_matrix(C, eps=precision))
         report_lines.append(f"    {np.array2string(c_diag, precision=decimals, suppress_small=True)}")
 
-    # 4. SDP Optimization Outcome
+    # 4. SDP Primal Optimization Outcome
     report_lines.append("\n[4] PRIMAL SDP SOLUTION (Density Matrix rho)")
     report_lines.append(section_border)
     if rho is None:
@@ -195,6 +198,18 @@ def export_results_txt(
         report_lines.append("  * Reconstructed Density Matrix rho:")
         report_lines.append(format_complex_matrix(rho, precision=decimals, eps=precision))
 
+    # 5. SDP Dual Optimization Outcome
+    report_lines.append("\n[5] DUAL SDP SOLUTION (Density Matrix rho)")
+    report_lines.append(section_border)
+    if y is None:
+        report_lines.append("  * SOLVER STATUS: INFEASIBLE / FAILED")
+        report_lines.append("  * Result: None")
+        report_lines.append("  * Diagnostic: The provided observation constraints are mutually")
+        report_lines.append("                incompatible with a positive semidefinite state (y >= 0).")
+    else:
+        report_lines.append("  * SOLVER STATUS: OPTIMAL")
+        report_lines.append(f"  * Result: {y:.6f}")
+    
     report_lines.append("\n" + header_border)
     final_report = "\n".join(report_lines)
 
