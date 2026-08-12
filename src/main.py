@@ -83,6 +83,7 @@ def main():
     # Generate bipartite operators (d^4 * d^4)
     U_bipartite = sdp.matrix.genBipartiteWeylHeisenbergOperators(d, U_local, U_local)
 
+    # TODO: check the value
     # Generate the phase error cost matrix
     C = sdp.matrix.gen_phase_error_cost_matrix(d)
 
@@ -100,11 +101,9 @@ def main():
     # Calcolate primal SDP
     rho_primal = sdp.primal.solve_primal_sdp(d, observations, C, delta, total_coincidences)
 
-    # TODO: test it
+    # TODO: test it - Actual return infinite
     # Calcolate dual SDP
     y_dual = sdp.dual.solve_dual_sdp(observations, C, delta, total_coincidences)
-
-    #print(f"y_dual: {y_dual}")
 
     if output_filename.endswith('.txt'):
         sdp.utils.export_results_txt(

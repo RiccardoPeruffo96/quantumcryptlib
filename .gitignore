@@ -2,6 +2,8 @@
 .venv
 .vscode
 data/matrix/*
+!data/matrix/note.md
 result.txt
 out/*
+!out/note.md
 src/sdp/__pycache__/*
