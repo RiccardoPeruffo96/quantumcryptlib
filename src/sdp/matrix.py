@@ -196,7 +196,7 @@ def gen_W_visibility_X(d: int,
 
     W_vis_x = np.zeros((d**2, d**2), dtype=complex)
     
-    for k in range(1, d):
+    for k in range(0, d):
         X_k = np.linalg.matrix_power(X_d, k)
         W_vis_x += np.kron(X_k.conj().T, X_k)
         
