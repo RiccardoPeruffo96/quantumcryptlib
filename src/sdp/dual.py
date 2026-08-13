@@ -39,6 +39,10 @@ def solve_dual_sdp(
     # 1. Dual Variables (Lagrange multipliers, one for each constraint)
     y = cp.Variable(num_constraints)
 
+    # Define the trace constraint
+    y_0 = cp.Variable()
+
+    # Extract W_k and c_k from observations list
     W_matrices: list[npt.NDArray[np.complex128]] = []
     c_values: list[float] = []
 
@@ -50,13 +54,12 @@ def solve_dual_sdp(
 
     # 2. Objective Function (Minimize)
     # y^T * c + penalty for finite-key statistics
-    objective_expr = y.T @ c_vector + cp.sum(cp.abs(y) * e)
+    objective_expr = (y.T @ c_vector + cp.sum(cp.abs(y) * e)) + y_0
     objective = cp.Minimize(objective_expr)
 
     # 3. The Dual Constraint (Linear Matrix Inequality)
     # In the primal, we had rho >> 0. In the dual, rho is replaced by a condition 
     # on the sum of the witness operators weighted by the dual variables.
-    y_0 = cp.Variable()
     M = y_0 * np.eye(dim, dtype=np.complex128)
 
     for k in range(num_constraints):
