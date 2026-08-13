@@ -47,8 +47,8 @@ def solve_primal_sdp(
 
     # 2. Fundamental Quantum State Constraints
     constraints = [
-        rho >> 0,                    # Positive Semidefinite constraint (rho >= 0)
-        cp.trace(rho) == 1,          # Trace = 1
+        rho >> 0,                   # Positive Semidefinite constraint (rho >= 0)
+        cp.trace(rho) == 1          # Trace = 1
     ]
 
     # 3. Channel Observation Constraints

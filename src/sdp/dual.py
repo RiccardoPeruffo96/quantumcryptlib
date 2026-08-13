@@ -23,7 +23,10 @@ def solve_dual_sdp(
     Returns:
         float | None: The optimal dual objective value (upper bound on Eve's information),
         or None if the solver fails.
-    """    
+    """
+    # Extract dim value from C matrix
+    dim = C.shape[0]
+
     # Number of constraints/observations (k)
     num_constraints = len(observations)
 
@@ -53,13 +56,16 @@ def solve_dual_sdp(
     # 3. The Dual Constraint (Linear Matrix Inequality)
     # In the primal, we had rho >> 0. In the dual, rho is replaced by a condition 
     # on the sum of the witness operators weighted by the dual variables.
-    M = 0
+    y_0 = cp.Variable()
+    M = y_0 * np.eye(dim, dtype=np.complex128)
 
     for k in range(num_constraints):
         M += y[k] * W_matrices[k]
     
     # The resulting matrix must be Positive Semidefinite (PSD)
-    constraints = [ M - C >> 0 ]
+    constraints = [
+        M - C >> 0
+    ]
 
     # 4. Solve the Problem
     problem = cp.Problem(objective, constraints)
