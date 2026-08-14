@@ -94,20 +94,24 @@ def export_results_json(
             "qudit_dimension": d,
             "qber_z": qber_z,
             "visibility_x": visibility_x,
-            "total_coincidences": total_coincidences,
+            "total_coincidences": total_coincidences
         },
         "operators": {
             "Xa_d": Xa_clean,
-            "Zb_d": Zb_clean,
+            "Zb_d": Zb_clean
         },
         "cost_matrix_C": {
             "shape": list(C.shape) if C is not None else None,
-            "diagonal": np.diag(C_clean) if C_clean is not None else None,
+            "diagonal": np.diag(C_clean) if C_clean is not None else None
         },
         "primal_sdp_solution": {
             "solver_status": "OPTIMAL" if rho is not None else "INFEASIBLE / FAILED",
             "trace": float(np.trace(rho_clean).real) if rho_clean is not None else None,
-            "density_matrix_rho": rho_clean,
+            "density_matrix_rho": rho_clean
+        },
+        "dual_sdp_solution": {
+            "solver_status": "OPTIMAL" if y is not None else "INFEASIBLE / FAILED",
+            "density_matrix_rho": y
         }
     }
 
@@ -142,7 +146,7 @@ def export_results_txt(
         Zb_d: Phase operator matrix (d x d).
         C: Phase error cost matrix (d^2 x d^2).
         rho: Optimized density matrix resulting from the primal SDP.
-        y: 
+        y: Lagrange variable lamba resulting from the dual SDP.
         decimals: Number of decimal places to format floating point values.
         precision: Absolute threshold below which matrix entries are zeroed out.
         output_filename: Path to the target text file for report export.
@@ -199,7 +203,7 @@ def export_results_txt(
         report_lines.append(format_complex_matrix(rho, precision=decimals, eps=precision))
 
     # 5. SDP Dual Optimization Outcome
-    report_lines.append("\n[5] DUAL SDP SOLUTION (Density Matrix rho)")
+    report_lines.append("\n[5] DUAL SDP SOLUTION (Lagrange Operator lamba)")
     report_lines.append(section_border)
     if y is None:
         report_lines.append("  * SOLVER STATUS: INFEASIBLE / FAILED")

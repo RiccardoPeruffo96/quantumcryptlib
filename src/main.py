@@ -100,8 +100,8 @@ def main():
     # Calcolate primal SDP
     rho_primal = sdp.primal.solve_primal_sdp(d, observations, C, delta, total_coincidences)
 
-    # TODO: test it - Actual return infinite
     # Calcolate dual SDP
+    # NOTE: the variabile (or parameter) is called y (or y_dual) and not 'lambda' because is a python keyword
     y_dual = sdp.dual.solve_dual_sdp(observations, C, delta, total_coincidences)
 
     if output_filename.endswith('.txt'):
