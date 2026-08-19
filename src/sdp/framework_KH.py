@@ -52,6 +52,12 @@ class framework_KH:
             npt.NDArray[np.complex128] | None: The optimal density matrix (rho) 
             of shape (d^2, d^2) that satisfies all quantum state constraints and 
             observation requirements, or None if the solver fails to converge.
+
+        NOTE:
+            This function implements the dual SDP formulation as described in the paper:
+            arXiv:2406.08544,
+            Section 'Key Rate Calculation',
+            Eq. (1).
         """
         # Total dimension of the bipartite joint Hilbert space (d^2 * d^2)
         dim = self.d * self.d
@@ -99,7 +105,9 @@ class framework_KH:
 
         NOTE:
             This function implements the dual SDP formulation as described in the paper:
-            arXiv:2406.08544, Section 'Key Rate Calculation', Example 1, Eq. (X).
+            arXiv:2406.08544,
+            Section 'Key Rate Calculation',
+            Eq. (2).
         """
         # Extract dim value from C matrix
         dim = C.shape[0]
