@@ -171,6 +171,13 @@ class framework_KH:
 
         Returns:
             npt.NDArray[np.complex128]: The d x d shift matrix.
+        
+        NOTE:
+            This function generate the shift matrix as described in the paper:
+            arXiv:1310.5059,
+            Section VIII ("Passive multi-state qudit measurement device for prime-dimensional Hilbert spaces"),
+            Subsection A ("Background on mutually unbiased bases"),
+            Eq. (54).
         """
         X = np.eye(self.d, k=-1)
         X[0, self.d-1] = 1.0
@@ -188,6 +195,13 @@ class framework_KH:
 
         Returns:
             npt.NDArray[np.complex128]: The d x d phase matrix.
+        
+        NOTE:
+            This function generate the phase matrix as described in the paper:
+            arXiv:1310.5059,
+            Section VIII ("Passive multi-state qudit measurement device for prime-dimensional Hilbert spaces"),
+            Subsection A ("Background on mutually unbiased bases"),
+            Eq. (54).
         """
         Z = np.diag([self.omega**j for j in range(self.d)])
         return np.array(Z)
