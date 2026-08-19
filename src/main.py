@@ -7,10 +7,11 @@ import numpy as np
 import numpy.typing as npt
 import os
 
-import sdp.dual
-import sdp.primal
-import sdp.matrix
+# import sdp.dual
+# import sdp.primal
+# import sdp.matrix
 import sdp.utils
+import sdp.framework_KH
 
 def main():
     parser = argparse.ArgumentParser(description="Program for developing Kanitschar Huber framework for quantum cryptography")
@@ -70,39 +71,41 @@ def main():
                             visibility_X = ES.value
                             c_visibility_X = ES.value
 
+    fKH = sdp.framework_KH.FrameworkKH(d, delta, total_coincidences)
+
     # Base matrix (d x d)
-    Xa_d = sdp.matrix.genShiftMatrix(d)
+    Xa_d = fKH.genShiftMatrix()
 
     # Phase matrix (d x d)
-    Zb_d = sdp.matrix.genPhaseMatrix(d)
+    Zb_d = fKH.genPhaseMatrix()
 
     # Generate Weyl Heisenberg local Operators (d^2 * d^2)
-    U_local = sdp.matrix.genWeylHeisenbergOperators(d, Xa_d, Zb_d)
+    U_local = fKH.genWeylHeisenbergOperators(Xa_d, Zb_d)
 
     # Generate bipartite operators (d^4 * d^4)
-    U_bipartite = sdp.matrix.genBipartiteWeylHeisenbergOperators(d, U_local, U_local)
+    U_bipartite = fKH.genBipartiteWeylHeisenbergOperators(U_local, U_local)
 
     # TODO: check the value
     # Generate the phase error cost matrix
-    C = sdp.matrix.gen_phase_error_cost_matrix(d)
+    C = fKH.gen_phase_error_cost_matrix()
 
     # Generate observation constraints: list of (W_k matrix, c_k value)
     observations: list[tuple[npt.NDArray[np.complex128], float]] = []
 
     # Add first observation W_k to observations
-    W_QBER_Z = sdp.matrix.gen_W_QBER_Z(d)
+    W_QBER_Z = fKH.gen_W_QBER_Z()
     observations.append((W_QBER_Z, c_QBER_Z))
     
     # Add second observation W_k to observations
-    W_visibility_X = sdp.matrix.gen_W_visibility_X(d, Xa_d)
+    W_visibility_X = fKH.gen_W_visibility_X(Xa_d)
     observations.append((W_visibility_X, c_visibility_X))
 
     # Calcolate primal SDP
-    rho_primal = sdp.primal.solve_primal_sdp(d, observations, C, delta, total_coincidences)
+    rho_primal = fKH.solve_primal_sdp(observations, C)
 
     # Calcolate dual SDP
     # NOTE: the variabile (or parameter) is called y (or y_dual) and not 'lambda' because is a python keyword
-    y_dual = sdp.dual.solve_dual_sdp(observations, C, delta, total_coincidences)
+    y_dual = fKH.solve_dual_sdp(observations, C)
 
     if output_filename.endswith('.txt'):
         sdp.utils.export_results_txt(

@@ -100,15 +100,13 @@ def genWeylHeisenbergOperators(d: int,
             U[(a, b)] = Xa @ Zb
     return U
 
-def genBipartiteWeylHeisenbergOperators(d: int,
-                               U1_d: dict[tuple[int, int], npt.NDArray[np.complex128]],
+def genBipartiteWeylHeisenbergOperators(U1_d: dict[tuple[int, int], npt.NDArray[np.complex128]],
                                U2_d: dict[tuple[int, int], npt.NDArray[np.complex128]]
                                ) -> dict[tuple[int, int, int, int], npt.NDArray[np.complex128]]:
     """
     Combine both Weyl Heisenberg operators using Kronecker product to create the d^4 bipartite operators
 
     Args:
-        d: The dimension of the qudit (d >= 2).
         U1_d: A dictionary mapping (a1, b1) pairs to their corresponding Weyl-Heisenberg operator matrices for the first qudit.
         U2_d: A dictionary mapping (a2, b2) pairs to their corresponding Weyl-Heisenberg operator matrices for the second qudit.
 

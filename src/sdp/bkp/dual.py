@@ -11,7 +11,7 @@ def solve_dual_sdp(
     N: int = 100000
 ) -> float | None:
     """
-    Solves the dual Semidefinite Program (SDP) to compute the secure key rate bound.
+    Solves the dual SDP formulation for the secure key rate.
 
     Args:
         observations: A list of the witness operators W_k of shape (d^2, d^2)
@@ -23,6 +23,10 @@ def solve_dual_sdp(
     Returns:
         float | None: The optimal dual objective value (upper bound on Eve's information),
         or None if the solver fails.
+
+    NOTE:
+        This function implements the dual SDP formulation as described in the paper:
+        arXiv:2406.08544, Section 'Key Rate Calculation', Example 1, Eq. (X).
     """
     # Extract dim value from C matrix
     dim = C.shape[0]

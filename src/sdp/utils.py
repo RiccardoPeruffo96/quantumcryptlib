@@ -238,6 +238,7 @@ def save_quantum_state(matrix: np.ndarray, filename: str):
     data = {"matrix": matrix.view(np.float64)} 
     save_file(data, filename)
 
+#TODO: fix
 def load_quantum_state(filename: str, shape: tuple) -> np.ndarray:
     """
     Read target matrix from safetensors.
