@@ -85,7 +85,6 @@ def main():
     # Generate bipartite operators (d^4 * d^4)
     U_bipartite = fKH.genBipartiteWeylHeisenbergOperators(U_local, U_local)
 
-    # TODO: check the value
     # Generate the phase error cost matrix
     C = fKH.gen_phase_error_cost_matrix()
 
@@ -101,11 +100,18 @@ def main():
     observations.append((W_visibility_X, c_visibility_X))
 
     # Calcolate primal SDP
-    rho_primal = fKH.solve_primal_sdp(observations, C)
+    # rho_primal = fKH.solve_primal_sdp(observations, C)
+    rho_primal = None
+    rho = fKH.get_secret_key_rate(observations, QBER_Z, f_efficiency=1.0)
 
     # Calcolate dual SDP
     # NOTE: the variabile (or parameter) is called y (or y_dual) and not 'lambda' because is a python keyword
-    y_dual = fKH.solve_dual_sdp(observations, C)
+    # y_dual = fKH.solve_dual_sdp(observations, C)
+    y_dual = None
+    lagrange = fKH.get_lagrange_multipliers(observations)
+
+    print(f"Secret Key Rate: {fKH.secret_key_rate:.{decimals}f}")
+    print(f"Lagrange Multipliers: {fKH.lagrange_multipliers:.{decimals}f}")
 
     if output_filename.endswith('.txt'):
         sdp.utils.export_results_txt(
