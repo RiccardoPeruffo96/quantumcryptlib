@@ -163,6 +163,14 @@ class framework_KH:
 
         Returns:
             np.complex128: The d-th root of unity, omega = exp(2πi/d).
+        
+        NOTE:
+            This function generate the HW bipartite operator as described in the paper:
+            arXiv:0807.2837,
+            Chapter 4 ("Weyl pairs and unitary group"),
+            Section 4.2 ("The unitary group in the generalized Pauli basis"),
+            Considerations about Counterexample (1),
+            Eq. (95).
         """
         return np.exp(2j * np.pi / self.d)
 
@@ -231,6 +239,14 @@ class framework_KH:
 
         Returns:
             dict[tuple[int, int], npt.NDArray[np.complex128]]: A dictionary mapping (a, b) pairs to their corresponding Weyl-Heisenberg operator matrices Uab_d.
+        
+        NOTE:
+            This function generate the HW operator as described in the paper:
+            arXiv:0807.2837,
+            Chapter 4 ("Weyl pairs and unitary group"),
+            Section 4.1 ("Generalized Pauli operators"),
+            Ex. (2),
+            Eq. (66-70).
         """
         if Xa_d is None:
             Xa_d = self.genShiftMatrix()
@@ -258,6 +274,14 @@ class framework_KH:
 
         Returns:
             dict[tuple[int, int, int, int], npt.NDArray[np.complex128]]: A dictionary mapping (a1, b1, a2, b2) tuples to their corresponding bipartite Weyl-Heisenberg operator matrices.
+
+        NOTE:
+            This function generate the HW bipartite operator as described in the paper:
+            arXiv:0807.2837,
+            Chapter 4 ("Weyl pairs and unitary group"),
+            Section 4.2 ("The unitary group in the generalized Pauli basis"),
+            Considerations about Counterexample (1),
+            Eq. (95).
         """
         U_bipartite: dict[tuple[int, int, int, int], npt.NDArray[np.complex128]] = {}
         for (a1, b1), U1 in U1_d.items():
